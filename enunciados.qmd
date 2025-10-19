@@ -5,3 +5,32 @@ format:
   html: default
   pdf: default
 ---
+
+# EJERCICIO 1. Lucía García Infante
+Aplicar los criterios de decisión bajo incertidumbre al siguiente problema considerando una situación favorable (beneficios) y desfavorable (costos)
+
+|    | e1  | e2  | e3  | e4  | e5  | e6  |
+|----|-----|-----|-----|-----|-----|-----|
+| d1 | 100 | 200 | 130 | 150 | 240 | 100 |
+| d2 | 300 | 145 | 230 | 345 | 200 | 280 |
+| d3 | 120 | 300 | 260 | 400 | 100 | 330 |
+| d4 | 180 | 130 | 300 | 370 | 280 | 190 |
+| d5 | 200 | 140 | 135 | 280 | 190 | 100 |
+
+
+
+# EJERCICIO 2. Lucía García Infante
+
+Marina es una alumna del grado en Estadística que acaba este año. El próximo año quiere realizar un máster para mejorar sus oportunidades laborales, pero solo puede escoger uno.
+Todavía no sabe en qué sitio empezará a trabajar aunque considera tres posibilidades:
+
+- Una **empresa privada en el extranjero**.
+- Una **institución pública**.
+- Una **empresa privada española**.
+
+Para decidir, Marina ha mirado tres másteres que le interesan y ha estimado cuál podría ser su primer sueldo anual según el tipo de empresa, junto con el coste de cada máster:
+
+- **Máster en Análisis de Datos**. Espera ganar unos 26.000 € en una empresa extranjera, 18.000 € en una institución pública y 20.000 € en una empresa española. Este máster tiene un coste de 10.000 €.
+- **Máster en Programación y Modelos Estadístico**. Estima que su sueldo inicial sería de 20.000 € en una empresa extranjera, 12.000 € en una institución pública y 20.000 € en una empresa privada española. El coste de este máster asciende a 6.500 €.
+- **Máster en Comunicación y Gestión de Proyectos**. Espera un sueldo de 10.000 € en una empresa extranjera, 12.000 € en una institución pública y 20.000 € en una empresa privada española. Este máster tiene un coste de 3.000 €.
+
