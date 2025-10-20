@@ -756,6 +756,8 @@ print(resultado_total)
 
 - Por tanto, la decisión final recomendada es **L2: Castilla-La Mancha** como ubicación óptima para la nueva planta solar.
 
+{{< pagebreak >}}
+
 # EJERCICIO 4. Víctor Silva Nieves.
 
 ## Problema 4.1
