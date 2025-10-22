@@ -1,18 +1,73 @@
 ---
 title: "Trabajo 1. Teoría de la Decisión. Enunciados y soluciones"
-author: "Grupo 3. Lucía García Infante, Rosa Fernandez López, Sergio Pacheco Márquez, Victor Silva Nieves"
-format:
-  html: default
-  pdf: default
+author: "Grupo 3. Lucía García Infante, Rosa Fernandez López, Sergio Pacheco Márquez, Víctor Silva Nieves"
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-expand: true
+    toc-location: left
+    code-fold: false
+    theme:
+      - cosmo
+      - estilo/tema.scss
+  typst: 
+    toc: true
+    toc-depth: 3
+    include-before-body: estilo/toc-sep.typ
+    code-fold: false
+    brand: _brand.yml"
+lang: es
 ---
 
 
 ```{r}
+
+# Cargar librerías necesarias
+library(tinytable)
+
+# Cargar script con funciones
 source("teoriadecision_funciones_incertidumbre.R")
+
+# Preparar tema propio para tablas
+colores <- hcl.colors(5, palette = "Berlin")
+
+crea_vector_posiciones_tabla <- function(numero_columnas) {
+  posiciones <- ""
+  for(i in 1:numero_columnas) {
+    posiciones <- paste0(posiciones,"c")
+  }
+  return(posiciones)
+}
+
+crea_tabla_estilo <- function(tabla, nombresfila = TRUE) {
+
+  if (nombresfila == TRUE) {
+    rn <- rownames(tabla)
+    if (is.null(rn)) rn <- rep("", nrow(tabla))
+    tabla <- cbind(rn = rn, tabla, stringsAsFactors = FALSE)
+    colnames(tabla)[1] <- ""   
+    rownames(tabla) <- NULL 
+  }
+
+  t <- tt(tabla, theme = "empty", width=1) |>
+    format_tt(quarto=TRUE) |>
+    style_tt(j = 1:ncol(tabla), align = crea_vector_posiciones_tabla(ncol(tabla)), alignv = "m") |>
+    style_tt(i = 0, line = "b", line_color = colores[2], line_width = 0.2,
+    background = colores[5], color = colores[3]) |> 
+    style_tt(i = 0, line = "t", line_color = colores[1], line_width = 0.1) |> 
+    style_tt(i = 1:nrow(tabla), line = "b", line_color = colores[1], line_width = 0.1) |> style_tt(j = 1:(ncol(tabla)-1), line = "r", line_color = colores[1], line_width = 0.1)
+
+  return(t)
+}
+
 ```
 
 
 # EJERCICIO 1. Lucía García Infante.
+
+## Prolema 1.1
+
 Aplicar los criterios de decisión bajo incertidumbre al siguiente problema considerando una situación favorable (beneficios) y desfavorable (costos)
 
 |    | e1  | e2  | e3  | e4  | e5  | e6  |
@@ -25,7 +80,7 @@ Aplicar los criterios de decisión bajo incertidumbre al siguiente problema cons
 
 
 
-## Apartado a. Tabla correspondiente a beneficios. 
+### Apartado a. Tabla correspondiente a beneficios. 
 
 ```{r}
 tb01a = crea.tablaX(c(100,200,130,150,240,100,
@@ -37,7 +92,7 @@ tb01a = crea.tablaX(c(100,200,130,150,240,100,
 ```
 \pagebreak
 
-**1. Método de Wald**
+#### **1. Método de Wald**
 
 Para cada alternativa se supone que va a pasar lo peor, y elige aquella alternativa que dé mejor valor.
 
@@ -47,7 +102,7 @@ names(b1$AlternativaOptima)
 ```
 
 
-**2. Método Optimista**
+#### **2. Método Optimista**
 
 Para cada alternativa se supone que pasará lo mejor, y se elige laa que dé mejor valor. 
 ```{r}
@@ -55,7 +110,7 @@ b2 = criterio.Optimista(tb01a,favorable = TRUE)
 names(b2$AlternativaOptima)
 ```
 
-**3. Método Hurwicz**
+#### **3. Método Hurwicz**
 
 Combina optimismo y pesimismo usando un coeficiente de optimismo $\alpha$:
 
@@ -84,7 +139,7 @@ Justo el $\alpha$ = 0.5 es el punto de corte entre las rectas. Por eso nos salen
 :::
 
 
-**4. Método Savage**
+#### **4. Método Savage**
 
 Minimiza el arrepentimiento máximo comparando lo que se pudo ganar y lo que se ganó.
 
@@ -94,7 +149,7 @@ names(b4$AlternativaOptima)
 ```
 
 
-**5. Método Laplace**
+#### **5. Método Laplace**
 
 Asume que todos los estados son igualmente probables y elige la alternativa con mayor promedio.
 
@@ -104,7 +159,7 @@ names(b5$AlternativaOptima)
 ```
 
 
-**6. Método Punto Ideal**
+#### **6. Método Punto Ideal**
 Considera un resultado perfecto y mide la distancia de cada alternativa a ese ideal, eligiendo la más cercana.
 ```{r}
 b6 = criterio.PuntoIdeal(tb01a,favorable=TRUE)
@@ -120,9 +175,9 @@ Por tanto, las mejores decisiones en este caso son la 2 y la 3.
 
 \pagebreak
 
-## Apartado b. Tabla correspondiente a costes. 
+### Apartado b. Tabla correspondiente a costes. 
 
-**1. Método de Wald**
+#### **1. Método de Wald**
 
 Para cada alternativa se supone que va a pasar lo peor, y elige aquella alternativa que dé mejor valor.
 
@@ -131,7 +186,7 @@ c1 = criterio.Wald(tb01a,favorable=FALSE)
 names(c1$AlternativaOptima)
 ```
 
-**2. Método Optimista**
+#### **2. Método Optimista**
 
 Para cada alternativa se supone que pasará lo mejor, y se elige laa que dé mejor valor. 
 
@@ -140,7 +195,7 @@ c2 = criterio.Optimista(tb01a,favorable = FALSE)
 names(c2$AlternativaOptima)
 ```
 
-**3. Método Hurwicz**
+#### **3. Método Hurwicz**
 
 Combina optimismo y pesimismo usando un coeficiente de optimismo $\alpha$:
 
@@ -165,7 +220,7 @@ Vemos que efectivamente tenemos el mismo resultado que el obtenido al principio.
 :::
 
 
-**4. Método Savage**
+#### **4. Método Savage**
 
 Minimiza el arrepentimiento máximo, que se calcula a partir del coste extra que se podría haber evitado.
 
@@ -174,7 +229,7 @@ c4 = criterio.Savage(tb01a,favorable=FALSE)
 names(c4$AlternativaOptima)
 ```
 
-**5. Método Laplace**
+#### **5. Método Laplace**
 
 Calcula el promedio de costes suponiendo igual probabilidad para cada estado.
 
@@ -184,7 +239,7 @@ names(c5$AlternativaOptima)
 ```
 
 
-**6. Método Punto Ideal**
+#### **6. Método Punto Ideal**
 
 Compara la distancia a un coste ideal mínimo, eligiendo el más cercano al ideal (menor coste).
 ```{r}
@@ -205,7 +260,7 @@ Por tanto, la mejor decisión en este caso es la 1.
 
 
 
-# EJERCICIO 2. Lucía García Infante.
+## Problema 1.2
 
 Marina es una alumna del grado en Estadística que acaba este año. El próximo año quiere realizar un máster para mejorar sus oportunidades laborales, pero solo puede escoger uno.
 Todavía no sabe en qué sitio empezará a trabajar aunque considera tres posibilidades:
@@ -221,9 +276,7 @@ Para decidir, Marina ha mirado tres másteres que le interesan y ha estimado cu�
 - **Máster en Comunicación y Gestión de Proyectos**. Espera un sueldo de 10.000 € en una empresa extranjera, 12.000 € en una institución pública y 20.000 € en una empresa privada española. Este máster tiene un coste de 3.000 €.
 
 
-**Solución:**
-
-PLANTEAMIENTO:
+### Planteamiento del problema
 
 - Un decisor: Marina.
 - Modelo de beneficios (favorable).
@@ -236,6 +289,8 @@ PLANTEAMIENTO:
   - E2 = Institución pública
   - E3 = Empresa privada española
 - Matriz de decisión:  Beneficios = Sueldo esperado - Coste máster
+
+### Solución del problema
 
 ```{r}
 # Máster en Análisis de Datos
@@ -287,7 +342,10 @@ Por tanto, Marina debería estudiar el próximo año el Máster en Análisis de 
 \pagebreak
 
 
-# EJERCICIO 1. Rosa Fernández López.
+# EJERCICIO 2. Rosa Fernández López.
+
+## Prolema 2.1
+
 Aplicar los criterios de decisión bajo incertidumbre (tanto en situación favorable
 como desfavorable) a los problemas cuya matriz de valores numéricos viene dada en la tabla siguiente:
 
@@ -297,11 +355,7 @@ como desfavorable) a los problemas cuya matriz de valores numéricos viene dada 
 | **d2**| 10 | 11 | 4  |
 | **d3**| 7  | 13 | 6  |
 
-**Solución:**
-
-```{r}
-source("teoriadecision_funciones_incertidumbre.R")
-```
+### Apartado a. Tabla correspondiente a beneficios.
 
 Matriz de datos
 ```{r}
@@ -376,6 +430,8 @@ cat("Según la mayoría de criterios en situación favorable, la alternativa óp
 
 ```
 
+### Apartado b. Tabla correspondiente a costes.
+
 Aplicar criterios en situación desfavorable
 ```{r}
 # Criterio de Wald (pesimista)
@@ -442,7 +498,7 @@ cat("Según la mayoría de criterios en situación desfavorable, la alternativa 
 \pagebreak
 
 
-# EJERCICIO 2. Rosa Fernandez López.
+## Prolema 2.2
 
 **Elección de tarifa eléctrica para un nuevo piso**
 
@@ -462,10 +518,7 @@ Carlos no tiene certeza sobre su consumo mensual, pero considera dos escenarios 
 
 Determinar cuál sería la mejor opción para Carlos según cada criterio.
 
-```{r}
-source("teoriadecision_funciones_incertidumbre.R")
-```
-
+### Planteamiento del problema
 Cálculo de costes anuales por alternativa y escenario
 
 ```{r}
@@ -481,6 +534,8 @@ luzflex_elevado  <- (350 * 0.20 + 15) * 12
 ecovolt_moderado <- 250 * 0.15 * 12
 ecovolt_elevado  <- (350 * 0.15 + 10) * 12
 ```
+
+### Solución del problema
 
 Crear la matriz de costes
 
@@ -538,5 +593,566 @@ Observando el gráfico, vemos que:
  - EcoVolt (línea azul) es la más sensible al valor de alpha: si alpha es bajo (más pesimista), su coste es alto; si alpha es alto (más optimista), su coste baja considerablemente.
 
  Esto indica que EcoVolt solo sería recomendable si Carlos adopta una actitud muy optimista respecto al consumo.
+<<<<<<< HEAD
 :::
 
+=======
+ 
+# EJERCICIO 3. Sergio Pacheco Márquez.
+
+## Problema 3.1
+
+Una empresa de tecnología debe escoger la estrategia de lanzamiento de un nuevo dispositivo.\
+Las alternativas son:
+
+-   **E1:** Lanzamiento enfocado en publicidad en redes sociales.\
+-   **E2:** Lanzamiento con campaña televisiva nacional.\
+-   **E3:** Lanzamiento mixto (online + medios tradicionales).
+
+El resultado económico (beneficio en miles de euros) depende del estado del mercado:\
+**S1** (Alta demanda), **S2** (Demanda media) y **S3** (Baja demanda).
+
+Se dispone de la siguiente tabla de pagos (beneficios en miles de euros):
+
+| **Estrategia** | **S1 (Alta demanda)** | **S2 (Demanda media)** | **S3 (Baja demanda)** |
+|:----------------|-----------------:|------------------:|-----------------:|
+| **E1** | 80 | 40 | 10 |
+| **E2** | 100 | 50 | -20 |
+| **E3** | 70 | 60 | 30 |
+
+1.Definimos la tabla de pagos (beneficios en miles de euros)
+
+```{r}
+vector_pagos <- c(80,40,10,
+                  100,50,-20,
+                  70,60,30)
+
+tablaX <- crea.tablaX(
+  vector_matporfilas = vector_pagos,
+  numalternativas = 3,
+  numestados = 3,
+  nb_alternativas = c("E1_Redes", "E2_TV", "E3_Mixta"),
+  nb_estados = c("Alta", "Media", "Baja")
+)
+
+tablaX
+```
+
+### Situación favorable
+
+```{r}
+wald_fav     <- criterio.Wald(tablaX, favorable = TRUE)
+optimista_fav <- criterio.Optimista(tablaX, favorable = TRUE)
+hurwicz_fav  <- criterio.Hurwicz(tablaX, alfa = 0.6, favorable = TRUE)
+laplace_fav  <- criterio.Laplace(tablaX, favorable = TRUE)
+savage_fav   <- criterio.Savage(tablaX, favorable = TRUE)
+puntoideal_fav <- criterio.PuntoIdeal(tablaX, favorable = TRUE)
+```
+
+Mostrar resultados
+
+```{r}
+cat("### Resultados (Situación Favorable)\n")
+cat("Wald: ", wald_fav$AlternativaOptima, "\n")
+cat("Optimista: ", optimista_fav$AlternativaOptima, "\n")
+cat("Hurwicz: ", hurwicz_fav$AlternativaOptima, "\n")
+cat("Laplace: ", laplace_fav$AlternativaOptima, "\n")
+cat("Savage: ", savage_fav$AlternativaOptima, "\n")
+cat("Punto Ideal: ", puntoideal_fav$AlternativaOptima, "\n")
+```
+
+### Situacion desfavorable
+
+```{r}
+wald_desf     <- criterio.Wald(tablaX, favorable = FALSE)
+optimista_desf <- criterio.Optimista(tablaX, favorable = FALSE)
+hurwicz_desf  <- criterio.Hurwicz(tablaX, alfa = 0.6, favorable = FALSE)
+laplace_desf  <- criterio.Laplace(tablaX, favorable = FALSE)
+savage_desf   <- criterio.Savage(tablaX, favorable = FALSE)
+puntoideal_desf <- criterio.PuntoIdeal(tablaX, favorable = FALSE)
+```
+
+Mostrar resultados
+
+```{r}
+cat("### Resultados (Situación Desfavorable)\n")
+cat("Wald: ", wald_desf$AlternativaOptima, "\n")
+cat("Optimista: ", optimista_desf$AlternativaOptima, "\n")
+cat("Hurwicz: ", hurwicz_desf$AlternativaOptima, "\n")
+cat("Laplace: ", laplace_desf$AlternativaOptima, "\n")
+cat("Savage: ", savage_desf$AlternativaOptima, "\n")
+cat("Punto Ideal: ", puntoideal_desf$AlternativaOptima, "\n")
+```
+
+Aplicamos la función global 
+
+```{r}
+resultado_fav <- criterio.Todos(tablaX, alfa = 0.6, favorable = TRUE)
+resultado_desf <- criterio.Todos(tablaX, alfa = 0.6, favorable = FALSE)
+
+
+print("### Resumen global situación favorable")
+print(resultado_fav)
+
+
+print("### Resumen global situación desfavorable")
+print(resultado_desf)
+```
+
+### Conclusión
+
+- En la situación favorable, los criterios **Maximax** y **Hurwicz** recomiendan la alternativa **E2** (Publicidad en TV),  
+  mientras que **Laplace** y **Punto Ideal** se inclinan por **E3** (Publicidad mixta), que ofrece un equilibrio entre riesgo y beneficio.
+
+- En la situación desfavorable, los criterios **Wald**, **Laplace** y **Savage** recomiendan **E3**,  
+  ya que presenta la menor pérdida posible.
+
+- Por tanto, la decisión final recomendada es **E3 (Publicidad mixta)**, por ser la más robusta frente a la incertidumbre.
+
+## Problema 3.2
+
+Una empresa de energías renovables debe decidir la localización de una nueva planta solar fotovoltaica.\
+Las alternativas de localización son:
+
+-   **L1:** Andalucía\
+-   **L2:** Castilla-La Mancha\
+-   **L3:** Aragón
+
+El beneficio proyectado (en millones de euros) depende del nivel de radiación solar anual, que se puede clasificar en tres escenarios posibles:\
+**S1** (Alta), **S2** (Media) y **S3** (Baja).
+
+Los beneficios estimados son los siguientes:
+
+| **Localización**            | **S1 (Alta)** | **S2 (Media)** | **S3 (Baja)** |
+|:----------------------------|--------------:|---------------:|--------------:|
+| **L1 (Andalucía)**          |            12 |              8 |             3 |
+| **L2 (Castilla-La Mancha)** |            10 |              9 |             6 |
+| **L3 (Aragón)**             |            11 |              7 |             4 |
+
+
+1.Definimos la tabla de pagos (beneficios en millones de euros)
+
+```{r}
+vector_pagos2 <- c(12, 8, 3,
+                   10, 9, 6,
+                   11, 7, 4)
+
+tablaX2 <- crea.tablaX(
+  vector_matporfilas = vector_pagos2,
+  numalternativas = 3,
+  numestados = 3,
+  nb_alternativas = c("L1_Andalucía", "L2_CastillaLaMancha", "L3_Aragón"),
+  nb_estados = c("Alta", "Media", "Baja")
+)
+
+tablaX2
+```
+
+Aplicamos la función global
+
+```{r}
+resultado_total <- criterio.Todos(tablaX2, alfa = 0.6, favorable = TRUE)
+print("### Resumen global Problema 2")
+print(resultado_total)
+```
+
+### Conclusión
+
+- La tabla resumen obtenida muestra las decisiones recomendadas por cada método.  
+  - En este caso, la mayoría de los criterios coinciden en que la mejor alternativa es **L2 (Castilla-La Mancha)**.  
+  - Esta localización presenta el mejor equilibrio entre rendimiento medio y riesgo bajo ante la incertidumbre del nivel de radiación solar.
+
+- Por tanto, la decisión final recomendada es **L2: Castilla-La Mancha** como ubicación óptima para la nueva planta solar.
+
+{{< pagebreak >}}
+
+# EJERCICIO 4. Víctor Silva Nieves.
+
+## Problema 4.1
+
+Se deben implementar todos los métodos de decisión bajo incertidumbre, tanto para el caso favorable como para el caso desfavorable (pesimista, optimista, Hurwicz, Savage, Laplace y punto ideal) para la siguiente tabla de decisión:
+
+```{r}
+matriz_datos <- matrix(c(5, 15, 8, 18,
+                      7, 13, 14, 20,
+                      6, 17, 11, 17,
+                      4, 14, 16, 16,
+                      10, 10, 13, 15),
+                    nrow = 5,
+                    byrow = TRUE)
+tabla_datos <- as.data.frame(matriz_datos)
+colnames(tabla_datos) <- c("ω1", "ω2", "ω3", "ω4")
+rownames(tabla_datos) <- c("a1", "a2", "a3", "a4", "a5")
+crea_tabla_estilo(tabla_datos, TRUE)
+```
+
+
+```{r}
+ # Definir la tabla de decisión
+ tabla_decision <- crea.tablaX(
+                    c(5, 15, 8, 18,
+                      7, 13, 14, 20,
+                      6, 17, 11, 17,
+                      4, 14, 16, 16,
+                      10, 10, 13, 15),
+                      numalternativas = 5, numestados = 4,
+                      nb_alternativas = c("a1", "a2", "a3", "a4", "a5"),
+                      nb_estados = c("ω1", "ω2", "ω3", "ω4"))
+
+```
+
+### Caso favorable
+
+#### Método pesimista
+```{r}
+#| echo: true
+alternativa_pesimista <- criterio.Wald(tabla_decision, favorable = TRUE)
+
+```
+
+Para el criterio de `{r} alternativa_pesimista$criterio`, en el caso `{r} alternativa_pesimista$metodo`, la alternativa $`{r} alternativa_pesimista$AlternativaOpt`$ es la mejor y el valor óptimo es $`{r} alternativa_pesimista$ValorOptimo`.$
+
+#### Método optimista
+
+```{r}
+#| echo: true
+
+alternativa_optimista <- criterio.Optimista(tabla_decision, favorable = TRUE)
+```
+
+Para el criterio `{r} alternativa_optimista$criterio`, en el caso `{r} alternativa_optimista$metodo`, la alternativa $`{r} alternativa_optimista$AlternativaOpt`$ es la mejor y el valor óptimo es $`{r} alternativa_optimista$ValorOptimo`$.
+
+#### Método Hurwicz
+
+```{r}
+#| echo: true
+
+alternativa_Hurwicz <- criterio.Hurwicz(tabla_decision, alfa = 0.5, favorable = TRUE)
+alternativas_Hurwicz_alfas <- criterio.Hurwicz.General(tabla_decision, alfa = 10, favorable = TRUE)
+tb_Hurwicz <- data.frame(matrix(c(
+                  seq(from = 0, to = 1, by = (1/alternativas_Hurwicz_alfas$alfa)),
+                  alternativas_Hurwicz_alfas$AlternativaOptima, 
+                  alternativas_Hurwicz_alfas$ValorOptimo),
+                  nrow = length(alternativas_Hurwicz_alfas$AlternativaOptima), 
+                  byrow = FALSE, 
+                  ))
+colnames(tb_Hurwicz) <- c("Alfa", "Alternativa óptima", "Valor óptimo")
+
+```
+
+Para el criterio de `{r} alternativa_Hurwicz$criterio`, en el caso `{r} alternativa_Hurwicz$metodo`, la alternativa $`{r} alternativa_Hurwicz$AlternativaOpt`$ es la mejor y el valor óptimo es $`{r} alternativa_Hurwicz$ValorOptimo`$. Con un valor de $\alpha =$ $`{r} alternativa_Hurwicz$alfa`$.
+
+Se muestra a continuación una tabla con las alternativas óptimas y los valores óptimos para diferentes valores de alfa, que van desde 0 hasta 1 con incrementos de 0.1:
+
+`{r} crea_tabla_estilo(tb_Hurwicz, FALSE)`
+
+Y gráficamente:
+
+```{r}
+#| echo: true
+
+gráfico_Hurwicz <- dibuja.criterio.Hurwicz(tabla_decision, favorable = TRUE)
+```
+
+Además, se muestra un gráfico donde se pueden apreciar los intervalos de las alternativas óptimas para diferentes valores de alfa:
+
+```{r}
+#| echo: true
+
+intervalos_Hurwicz <- dibuja.criterio.Hurwicz_Intervalos(tabla_decision, favorable = TRUE)
+```
+
+
+#### Método Savage
+
+```{r}
+#| echo: true
+
+alternativa_Savage <- criterio.Savage(tabla_decision, favorable = TRUE)
+```
+
+Para el criterio de `{r} alternativa_Savage$criterio`, en el caso `{r} alternativa_Savage$metodo`, la alternativa $`{r} alternativa_Savage$AlternativaOpt`$ es la mejor y el valor óptimo es $`{r} alternativa_Savage$ValorOptimo`$.
+
+#### Método Laplace
+
+```{r}
+#| echo: true
+
+alternativa_Laplace <- criterio.Laplace(tabla_decision, favorable = TRUE)
+```	
+
+Para el criterio de `{r} alternativa_Laplace$criterio`, en el caso `{r} alternativa_Laplace$metodo`, la alternativa $`{r} alternativa_Laplace$AlternativaOpt`$ es la mejor y el valor óptimo es $`{r} alternativa_Laplace$ValorOptimo`$.
+
+#### Método punto ideal
+
+```{r}
+#| echo: true
+
+alternativa_puntoideal <- criterio.PuntoIdeal(tabla_decision, favorable = TRUE)
+```
+
+Para el criterio de `{r} alternativa_puntoideal$criterio`, en el caso `{r} alternativa_puntoideal$metodo`, la alternativa $`{r} alternativa_puntoideal$AlternativaOpt`$ es la mejor y el valor óptimo es $`{r} round(alternativa_puntoideal$ValorOptimo,2)`$.
+
+#### Resumen caso favorable
+
+```{r}
+#| echo: true
+
+matriz_resumen_favorable <- matrix(c(
+              alternativa_pesimista$criterio,
+               alternativa_optimista$criterio,
+               alternativa_Hurwicz$criterio,
+               alternativa_Savage$criterio,
+               alternativa_Laplace$criterio,
+               alternativa_puntoideal$criterio,alternativa_pesimista$AlternativaOpt,
+               alternativa_optimista$AlternativaOpt,
+               alternativa_Hurwicz$AlternativaOpt,
+               alternativa_Savage$AlternativaOpt,
+               alternativa_Laplace$AlternativaOpt,
+               alternativa_puntoideal$AlternativaOpt),
+               nrow = 6, byrow = FALSE)
+
+resumen_favorable <- as.data.frame(matriz_resumen_favorable)
+colnames(resumen_favorable) <- c("Criterio", "Alternativa óptima")
+crea_tabla_estilo(resumen_favorable, FALSE)
+
+```
+
+Vemos que las alternativas óptimas son diferentes según el criterio utilizado, siendo la alternativa $a_2$ la que más veces aparece como óptima (5 veces). Ya alternativa $a_5$ aparece una sola vez como óptima para el criterio pesimista y es la mejor alternativa también para el criterio de Hurwicz con valores de $\alpha$ menores que $`{r} intervalos_Hurwicz$PuntosDeCorte`$ .
+
+::: {.callout-tip}
+## Decisión final
+En este caso se va a optar por la alternativa $a_2$ dado que es la que mayor número de veces aparece como óptima. En todos los criterios excepto en el persimista.
+:::
+
+### Caso desfavorable
+
+#### Método pesimista
+
+```{r}
+#| echo: true
+
+alternativa_pesimista_desfavorable <- criterio.Wald(tabla_decision, favorable = FALSE)
+```
+
+Para el criterio de `{r} alternativa_pesimista_desfavorable$criterio`, en el caso `{r} alternativa_pesimista_desfavorable$metodo`, la alternativa $`{r} alternativa_pesimista_desfavorable$AlternativaOpt`$ es la mejor y el valor óptimo es $`{r} alternativa_pesimista_desfavorable$ValorOptimo`$.
+
+#### Método optimista
+
+```{r}
+#| echo: true
+
+alternativa_optimista_desfavorable <- criterio.Optimista(tabla_decision, favorable = FALSE)
+```
+
+Para el criterio `{r} alternativa_optimista_desfavorable$criterio`, en el caso `{r} alternativa_optimista_desfavorable$metodo`, la alternativa $`{r} alternativa_optimista_desfavorable$AlternativaOpt`$ es la mejor y el valor óptimo es $`{r} alternativa_optimista_desfavorable$ValorOptimo`$.
+
+#### Método Hurwicz
+
+```{r}
+#| echo: true
+
+alternativa_Hurwicz_desfavorable <- criterio.Hurwicz(tabla_decision, alfa = 0.5, favorable = FALSE)
+alternativas_Hurwicz_alfas_desfavorable <- criterio.Hurwicz.General(tabla_decision, alfa = 10, favorable = FALSE)
+tb_Hurwicz_desfavorable <- data.frame(matrix(c(
+                  seq(from = 0, to = 1, by = (1/alternativas_Hurwicz_alfas_desfavorable$alfa)),
+                  alternativas_Hurwicz_alfas_desfavorable$AlternativaOptima, 
+                  alternativas_Hurwicz_alfas_desfavorable$ValorOptimo),
+                  nrow = length(alternativas_Hurwicz_alfas_desfavorable$AlternativaOptima), 
+                  byrow = FALSE, 
+                  ))
+colnames(tb_Hurwicz_desfavorable) <- c("Alfa", "Alternativa óptima", "Valor óptimo")
+```
+
+Para el criterio de `{r} alternativa_Hurwicz_desfavorable$criterio`, en el caso `{r} alternativa_Hurwicz_desfavorable$metodo`, la alternativa $`{r} alternativa_Hurwicz_desfavorable$AlternativaOpt`$ es la mejor y el valor óptimo es $`{r} alternativa_Hurwicz_desfavorable$ValorOptimo`$. Con un valor de $\alpha =$ $`{r} alternativa_Hurwicz_desfavorable$alfa`$.
+
+Se muestra a continuación una tabla con las alternativas óptimas y los valores óptimos para diferentes valores de alfa, que van desde 0 hasta 1 con incrementos de 0.1:
+
+`{r} crea_tabla_estilo(tb_Hurwicz_desfavorable, FALSE)`
+
+Y gráficamente:
+
+```{r}
+#| echo: true
+
+gráfico_Hurwicz_desfavorable <- dibuja.criterio.Hurwicz(tabla_decision, favorable = FALSE)
+```
+
+Además, se muestra un gráfico donde se pueden apreciar los intervalos de las alternativas óptimas para diferentes valores de alfa:
+
+```{r}
+#| echo: true
+
+intervalos_Hurwicz_desfavorable <- dibuja.criterio.Hurwicz_Intervalos(tabla_decision, favorable = FALSE)
+
+```
+
+#### Método Savage
+
+```{r}
+#| echo: true
+
+alternativa_Savage_desfavorable <- criterio.Savage(tabla_decision, favorable = FALSE)
+```
+
+Para el criterio de `{r} alternativa_Savage_desfavorable$criterio`, en el caso `{r} alternativa_Savage_desfavorable$metodo`, la alternativa $`{r} alternativa_Savage_desfavorable$AlternativaOpt`$ es la mejor y el valor óptimo es $`{r} alternativa_Savage_desfavorable$ValorOptimo`$.
+
+#### Método Laplace
+
+```{r}
+#| echo: true
+
+alternativa_Laplace_desfavorable <- criterio.Laplace(tabla_decision, favorable = FALSE)
+```
+
+Para el criterio de `{r} alternativa_Laplace_desfavorable$criterio`, en el caso `{r} alternativa_Laplace_desfavorable$metodo`, la alternativa $`{r} alternativa_Laplace_desfavorable$AlternativaOpt`$ es la mejor y el valor óptimo es $`{r} alternativa_Laplace_desfavorable$ValorOptimo`$.
+
+#### Método punto ideal
+
+```{r}
+#| echo: true
+
+alternativa_puntoideal_desfavorable <- criterio.PuntoIdeal(tabla_decision, favorable = FALSE)
+```
+
+Para el criterio de `{r} alternativa_puntoideal_desfavorable$criterio`, en el caso `{r} alternativa_puntoideal_desfavorable$metodo`, la alternativa $`{r} alternativa_puntoideal_desfavorable$AlternativaOpt`$ es la mejor y el valor óptimo es $`{r} round(alternativa_puntoideal_desfavorable$ValorOptimo,2)`$.
+
+#### Resumen caso desfavorable
+
+```{r}
+#| echo: true
+
+
+matriz_resumen_desfavorable <- matrix(c(
+               alternativa_pesimista_desfavorable$criterio,
+               alternativa_optimista_desfavorable$criterio,
+               alternativa_Hurwicz_desfavorable$criterio,
+               alternativa_Savage_desfavorable$criterio,
+               alternativa_Laplace_desfavorable$criterio,
+               alternativa_puntoideal_desfavorable$criterio,
+               alternativa_pesimista_desfavorable$AlternativaOpt,
+               alternativa_optimista_desfavorable$AlternativaOpt,
+               alternativa_Hurwicz_desfavorable$AlternativaOpt,
+               alternativa_Savage_desfavorable$AlternativaOpt,
+               alternativa_Laplace_desfavorable$AlternativaOpt,
+               alternativa_puntoideal_desfavorable$AlternativaOpt),
+               nrow = 6, byrow = FALSE)
+
+resumen_desfavorable <- as.data.frame(matriz_resumen_desfavorable)
+colnames(resumen_desfavorable) <- c("Criterio", "Alternativa óptima")
+crea_tabla_estilo(resumen_desfavorable, FALSE)
+
+```
+
+Vemos que las alternativas óptimas son diferentes según el criterio utilizado, siendo la alternativa $a_1$ la que más veces aparece como óptima (3 veces). La alternativa $a_4$ aparece en dos ocasiones como óptima, por último para el criterio pesimista la mejor alternativa es $a_5$ y es la mejor alternativa también para el criterio de Hurwicz con valores de $\alpha$ menores que `{r} intervalos_Hurwicz_desfavorable$PuntosDeCorte ` .
+
+::: {.callout-tip}
+## Decisión final
+En este caso se va a optar por la alternativa $a_1$ dado que es la que mayor número de veces aparece como óptima y en el criterio de Hurwicz el gráfico nos muestra que es bastante equilibrada para todos los valores de alfa, aunque nunca sea la mejor.
+:::
+
+{{< pagebreak >}}
+
+## Problema 4.2
+
+Una persona recibe una herencia de 200.000 euros y se le presentan diferentes opciones de inversión para los próximos 10 años.
+
+Puede terminar de pagar su hipoteca actual, ahorrando 40.000 euros de intereses y le sobrarían 30.000 euros que pondría en una cuenta remunerada al 2% anual
+
+Puede seguir pagando su hipoteca y elegir una de las siguientes opciones
+
+- Adquirir un piso por esa cantidad y si los alquileres turísticos siguen siendo posibles podrá generar un 6% anual. Si por el contrario se regularan pasaría a perder un 1% anual.
+- Invertir en un fondo indexado que le puede generar un 7% anual pero si la bolsa baja perderá un 8%.
+- Invertir en una franquicia de una cadena de comida rápida. Si acierta con el sitio podrá generar un 10% anual pero si se equivoca al seleccionar el sitio incurrirá en unas pérdidas anuales del 10%
+
+### Planteamiento del problema
+
+Alternativas
+
+* a1: Pagar hipoteca
+* a2: Adquirir piso
+* a3: Invertir en un fondo
+* a4: Invertir en una franquicia
+
+Estados de la naturaleza
+
+* e1: Regulación alquileres
+* e2: No regulación alquileres
+* e3: Bolsa sube
+* e4: Bolsa baja
+* e5: Acierta con la ubicación
+* e6: Se equivoca con la ubicación
+
+Ahora vamos a construir la matriz de decisión para un año. Puesto que los estados de la naturaleza afectan por parejas (e1-e2, e3-e4, e5-e6) a las alternativas (a2, a3, a4). Se van a reducir a que la inversión de cada alternativa salga bien o mal ese año.
+
+* e1_red: Inversión exitosa
+* e2_red: Inversión fallida
+
+Puesto que la alternativa 1 no se ve afectada por los estados de la naturaleza esta alternativa tendrá valores fijos en todos ellos y no se ve alterada por esta reducción.
+
+Vamos a hacer una tabla para un año y luego aplicaremos los criterios de decisión bajo incertidumbre para ver qué alternativa es la mejor.
+
+```{r}
+
+m11 <- 4000 + 30000 * 0.02
+m12 <- 4000 + 30000 * 0.02
+
+m21 <- 200000 * 0.06 - 4000
+m22 <- -200000 * 0.01 - 4000
+
+m31 <- 200000 * 0.07 - 4000
+m32 <- -200000 * 0.08 - 4000
+
+m41 <- 200000 * 0.1 - 4000
+m42 <- -200000 * 0.1 - 4000
+
+matriz_datos_2 <- matrix(c(m11, m12,
+                      m21, m22,
+                      m31, m32,
+                      m41, m42),
+                    nrow = 4,
+                    byrow = TRUE)
+tabla_datos_2 <- as.data.frame(matriz_datos_2)
+colnames(tabla_datos_2) <- c("Inversión exitosa", "Inversión fallida")
+rownames(tabla_datos_2) <- c("Pagar hipoteca",
+                             "Aquirir piso",
+                             "Invertir fondo",
+                             "Invertir franquicia")
+crea_tabla_estilo(tabla_datos_2, TRUE)
+```
+
+```{r}
+# Definir la tabla de decisión
+tabla_decision2 <- crea.tablaX(c(m11, m12,
+                      m21, m22,
+                      m31, m32,
+                      m41, m42),
+                      numalternativas = 4,
+                      numestados = 2,
+                      nb_alternativas = c("Pagar hipoteca",
+                                          "Aquirir piso",
+                                          "Invertir fondo",
+                                          "Invertir franquicia"),
+                      nb_estados = c("Inversión exitosa",
+                                     "Inversión fallida"))
+                      
+```
+
+
+### Resolución del problema
+
+En la siguiente tabla se muestran los resultados de aplicar todos los criterios de decisión bajo incertidumbre para el caso favorable.
+```{r}
+resultado2 <- criterio.Todos(tabla_decision2, alfa = 0.5, favorable = TRUE)
+res <- as.data.frame(resultado2)
+
+crea_tabla_estilo(res, nombresfila = TRUE)
+```
+
+Observamos que para 4 de los 6 criterios la alternativa óptima es "Pagar hipoteca", siendo las otras dos alternativas óptimas "Invertir en una franquicia" para el criterio optimista y "Adquirir un piso" para el criterio de Hurwicz.
+
+::: {.callout-tip}
+## Decisión final
+Se va a optar por la alternativa "Pagar hipoteca" ya que es la que más veces aparece como óptima y además es la opción más segura, ya que las demás alternativas conllevan un riesgo mayor de pérdida económica.
+:::
+>>>>>>> af97e053f40d66758ae6dd71a85a4fa0d0ecefa5
