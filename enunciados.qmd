@@ -1,6 +1,6 @@
 ---
 title: "Trabajo 1. Teoría de la Decisión. Enunciados y soluciones"
-author: "Grupo 3. Lucía García Infante, Rosa Fernandez López, Sergio Pacheco Márquez, Víctor Silva Nieves"
+author: "Grupo 3. Lucía García Infante, Rosa Fernández López, Sergio Pacheco Márquez, Víctor Silva Nieves"
 format: 
   html:
     toc: true
