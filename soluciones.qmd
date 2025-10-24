@@ -63,6 +63,7 @@ crea_tabla_estilo <- function(tabla, nombresfila = TRUE) {
 
 ```
 
+{{< pagebreak >}}
 
 # EJERCICIO 1. Lucía García Infante.
 
@@ -90,7 +91,7 @@ tb01a = crea.tablaX(c(100,200,130,150,240,100,
                       200,140,135,280,190,100),
                     numalternativas = 5, numestados = 6)
 ```
-\pagebreak
+{{< pagebreak >}}
 
 #### **1. Método de Wald**
 
@@ -173,7 +174,7 @@ Tomando los datos de la tabla como beneficios, los resultados que obtenemos son:
 Por tanto, las mejores decisiones en este caso son la 2 y la 3.
 :::
 
-\pagebreak
+{{< pagebreak >}}
 
 ### Apartado b. Tabla correspondiente a costes. 
 
@@ -256,7 +257,7 @@ Por tanto, la mejor decisión en este caso es la 1.
 :::
 
 
-\pagebreak
+{{< pagebreak >}}
 
 
 
@@ -322,7 +323,7 @@ tb02 = crea.tablaX(c(m11,m12,m13,
 tb02
 ```
 
-\pagebreak
+{{< pagebreak >}}
 
 Aplico la función que devuelve todos los métodos en una única tabla: 
 
@@ -339,7 +340,7 @@ Por tanto, Marina debería estudiar el próximo año el Máster en Análisis de 
 :::
 
 
-\pagebreak
+{{< pagebreak >}}
 
 
 # EJERCICIO 2. Rosa Fernández López.
@@ -510,8 +511,7 @@ cat("Según la mayoría de criterios en situación desfavorable, la alternativa 
 
 
 
-\pagebreak
-
+{{< pagebreak >}}
 
 ## Prolema 2.2
 
@@ -622,7 +622,7 @@ El punto de corte entre las alternativas ElectroPlus y EcoVolt es 0.7
 :::
 
 
-\pagebreak
+{{< pagebreak >}}
  
 
 # EJERCICIO 3. Sergio Pacheco Márquez.
@@ -1221,4 +1221,5 @@ Observamos que para 4 de los 6 criterios la alternativa óptima es "Pagar hipote
 ## Decisión final
 Se va a optar por la alternativa "Pagar hipoteca" ya que es la que más veces aparece como óptima y además es la opción más segura, ya que las demás alternativas conllevan un riesgo mayor de pérdida económica.
 :::
->>>>>>> af97e053f40d66758ae6dd71a85a4fa0d0ecefa5
+
+
