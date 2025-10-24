@@ -63,21 +63,37 @@ crea_tabla_estilo <- function(tabla, nombresfila = TRUE) {
 
 ```
 
-{{< pagebreak >}}
+\pagebreak 
 
 # EJERCICIO 1. Lucía García Infante.
 
-## Prolema 1.1
+## Problema 1.1
 
 Aplicar los criterios de decisión bajo incertidumbre al siguiente problema considerando una situación favorable (beneficios) y desfavorable (costos)
 
-|    | e1  | e2  | e3  | e4  | e5  | e6  |
-|----|-----|-----|-----|-----|-----|-----|
-| d1 | 100 | 200 | 130 | 150 | 240 | 100 |
-| d2 | 300 | 145 | 230 | 345 | 200 | 280 |
-| d3 | 120 | 300 | 260 | 400 | 100 | 330 |
-| d4 | 180 | 130 | 300 | 370 | 280 | 190 |
-| d5 | 200 | 140 | 135 | 280 | 190 | 100 |
+```{r, echo= FALSE}
+#Creamos la matriz
+matriz_enunciado <- matrix(c(
+  100,200,130,150,240,100,
+  300,145,230,345,200,280,
+  120,300,260,400,100,330,
+  180,130,300,370,280,190,
+  200,140,135,280,190,100
+), 
+nrow = 5,
+byrow = TRUE)
+
+#La convertimos en un data.frame
+tabla_enunciado <- as.data.frame(matriz_enunciado)
+
+#Asignamos nombres de columnas (estados de la naturaleza) y filas (alternativas)
+colnames(tabla_enunciado) <- c("e1", "e2", "e3", "e4", "e5", "e6")
+rownames(tabla_enunciado) <- c("d1", "d2", "d3", "d4","d5")
+
+#Mostramos la tabla con estilo
+crea_tabla_estilo(tabla_enunciado, TRUE)
+
+```
 
 
 
@@ -91,7 +107,6 @@ tb01a = crea.tablaX(c(100,200,130,150,240,100,
                       200,140,135,280,190,100),
                     numalternativas = 5, numestados = 6)
 ```
-{{< pagebreak >}}
 
 #### **1. Método de Wald**
 
@@ -174,7 +189,7 @@ Tomando los datos de la tabla como beneficios, los resultados que obtenemos son:
 Por tanto, las mejores decisiones en este caso son la 2 y la 3.
 :::
 
-{{< pagebreak >}}
+\pagebreak
 
 ### Apartado b. Tabla correspondiente a costes. 
 
@@ -329,7 +344,8 @@ Aplico la función que devuelve todos los métodos en una única tabla:
 
 ```{r}
 sol02 = criterio.Todos(tb02, alfa=0.5, favorable=TRUE)
-sol02
+crea_tabla_estilo(sol02, TRUE)
+
 ```
 
 :::{.callout-tip}
