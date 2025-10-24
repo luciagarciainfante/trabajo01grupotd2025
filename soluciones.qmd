@@ -1,6 +1,6 @@
 ---
 title: "Trabajo 1. Teoría de la Decisión. Enunciados y soluciones"
-author: "Grupo 3. Lucía García Infante, Rosa Fernandez López, Sergio Pacheco Márquez, Víctor Silva Nieves"
+author: "Grupo 3. Lucía García Infante, Rosa Fernández López, Sergio Pacheco Márquez, Víctor Silva Nieves"
 format: 
   html:
     toc: true
@@ -344,16 +344,33 @@ Por tanto, Marina debería estudiar el próximo año el Máster en Análisis de 
 
 # EJERCICIO 2. Rosa Fernández López.
 
-## Prolema 2.1
+## Problema 2.1
 
 Aplicar los criterios de decisión bajo incertidumbre (tanto en situación favorable
 como desfavorable) a los problemas cuya matriz de valores numéricos viene dada en la tabla siguiente:
 
-|  | e1 | e2 | e3 |
-|:------|:----:|:----:|:----:|
-| **d1**| 12 | 8  | 5  |
-| **d2**| 10 | 11 | 4  |
-| **d3**| 7  | 13 | 6  |
+```{r}
+#Creamos la matriz
+matriz_enunciado <- matrix(c(
+  12, 8, 5, 
+  10, 11, 4,
+  7, 13, 6  
+), 
+nrow = 3,
+byrow = TRUE)
+
+#La convertimos en un data.frame
+tabla_enunciado <- as.data.frame(matriz_enunciado)
+
+#Asignamos nombres de columnas (estados de la naturaleza) y filas (alternativas)
+colnames(tabla_enunciado) <- c("e1", "e2", "e3")
+rownames(tabla_enunciado) <- c("d1", "d2", "d3")
+
+#Mostramos la tabla con estilo
+crea_tabla_estilo(tabla_enunciado, TRUE)
+
+```
+
 
 ### Apartado a. Tabla correspondiente a beneficios.
 
@@ -403,9 +420,7 @@ cat("La decisión óptima en el Criterio de Punto Ideal es: ",
 
 # Todos los criterios juntos
 sol_T <- criterio.Todos(m1, favorable = TRUE, alfa = 0.5)
-library(tinytable)
-tt(sol_T, rownames = TRUE)
-
+crea_tabla_estilo(sol_T, TRUE)
 ```
 
 
@@ -466,9 +481,7 @@ cat("La decisión óptima en el Criterio de Punto Ideal es: ",
 
 # Todos los criterios juntos
 sol_T_d <- criterio.Todos(m1, favorable = FALSE, alfa = 0.5)
-library(tinytable)
-tt(sol_T_d, rownames = TRUE)
-
+crea_tabla_estilo(sol_T_d, TRUE)
 ```
 
 
@@ -476,6 +489,8 @@ Resultados en situación desfavorable
 ```{r}
 dibuja.criterio.Hurwicz(m1, favorable = FALSE)
 ```
+
+
 ```{r}
 
 # Extraer la fila "iAlt.Opt (Desfav.)" de la tabla
@@ -519,6 +534,20 @@ Carlos no tiene certeza sobre su consumo mensual, pero considera dos escenarios 
 Determinar cuál sería la mejor opción para Carlos según cada criterio.
 
 ### Planteamiento del problema
+
+- Un decisor: Carlos
+- Modelo de costes (desfavorable).
+- Alternativas:
+  - A1 = ElectroPlus (tarifa fija mensual de 45€).
+  - A2 = LuzFlex (tarifa variable de 0,20€/kWh + cuota fija de 15€).
+  - A3 = EcoVolt (tarifa variable de 0,15€/kWh + penalización de 10€ si se supera el umbral de 300kWh).
+- Estados de la naturaleza:
+  - E1 = Consumo moderado (250kWh/mes).
+  - E2 = Consumo elevado (350kWh/mes).
+- Matriz de decisión:  Costes anuales calculados según cada alternativa y escenario de consumo.
+
+### Solución del problema
+
 Cálculo de costes anuales por alternativa y escenario
 
 ```{r}
@@ -534,8 +563,6 @@ luzflex_elevado  <- (350 * 0.20 + 15) * 12
 ecovolt_moderado <- 250 * 0.15 * 12
 ecovolt_elevado  <- (350 * 0.15 + 10) * 12
 ```
-
-### Solución del problema
 
 Crear la matriz de costes
 
@@ -559,8 +586,7 @@ Aplicar criterios en situación desfavorable (costes)
 sol_carlos <- criterio.Todos(m_carlos, favorable = FALSE, alfa = 0.5)
 
 # Mostrar tabla de resultados
-library(tinytable)
-tt(sol_carlos, rownames = TRUE)
+crea_tabla_estilo(sol_carlos, TRUE)
 
 ```
 
