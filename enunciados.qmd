@@ -50,7 +50,7 @@ Para decidir, Marina ha mirado tres másteres que le interesan y ha estimado cu�
 - **Máster en Programación y Modelos Estadístico**. Estima que su sueldo inicial sería de 20.000 € en una empresa extranjera, 12.000 € en una institución pública y 20.000 € en una empresa privada española. El coste de este máster asciende a 6.500 €.
 - **Máster en Comunicación y Gestión de Proyectos**. Espera un sueldo de 10.000 € en una empresa extranjera, 12.000 € en una institución pública y 20.000 € en una empresa privada española. Este máster tiene un coste de 3.000 €.
 
-
+\pagebreak
 
 # EJERCICIO 2. Rosa Fernández López
 
@@ -85,6 +85,8 @@ Carlos no tiene certeza sobre su consumo mensual, pero considera dos escenarios 
 - Consumo elevado: 350kWh al mes.
 
 Determinar cuál sería la mejor opción para Carlos según cada criterio.
+
+\pagebreak
 
 # EJERCICIO 3. Sergio Pacheco Márquez
 
@@ -127,6 +129,8 @@ Los beneficios estimados son los siguientes:
 | **L1 (Andalucía)**          |            12 |              8 |             3 |
 | **L2 (Castilla-La Mancha)** |            10 |              9 |             6 |
 | **L3 (Aragón)**             |            11 |              7 |             4 |
+
+\pagebreak
 
 # EJERCICIO 4. Víctor Silva Nieves
 
